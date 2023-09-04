@@ -91,6 +91,12 @@ public class OrderService {
 		
 	}
 	
+	public List<Order> getOrders(String oid) {
+		logger.info("fetching order details for order-" + oid);
+		
+		return ordJPARepo.findByOrderID(oid);
+	}
+	
 	
 	
 }

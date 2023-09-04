@@ -11,6 +11,7 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.packagecentre.ms.orderservice.beans.OrderAppStatus;
 import com.packagecentre.ms.orderservice.config.Configuration;
 import com.packagecentre.ms.orderservice.jpa.dto.ItemAddress;
+import com.packagecentre.ms.orderservice.jpa.entity.Order;
 import com.packagecentre.ms.orderservice.service.OrderService;
 
 @RestController
@@ -28,8 +29,7 @@ public class OrderServiceController {
 	
 	@GetMapping("/order-svc-check")
 	public OrderAppStatus checkOrderSvcHlth() {
-		logger.info("appName from ppty -->"+ conf.getAppName());
-	
+		logger.info("appName from ppty -->"+ conf.getAppName());	
 		
 		return new OrderAppStatus("OK", new Date());
 	}
@@ -63,6 +63,12 @@ public class OrderServiceController {
 		
 	}
 	
+	@GetMapping("/orders/{orderID}")
+	public List<Order> getOrderStatus(@PathVariable String orderID) {
+		logger.info("get list of order: "+ orderID);	
+		
+		return ordSvc.getOrders(orderID);
+	}
 	//Hystrix fallback API
 	public ResponseEntity<Object> createOrderFallback(List<ItemAddress> itemAddrList,Integer custID) {
 		
